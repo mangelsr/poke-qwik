@@ -8,10 +8,19 @@ export default component$(() => {
     <>
       <span class="text-2xl">Simple search</span>
       <span class="text-9xl">{pokemonId}</span>
-      {/* TODO: Add pokemon image */}
+      <img
+        width={200}
+        height={200}
+        src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemonId.value}.png`}
+        alt="Pokemon Sprite"
+      />
       <div class="mt-2">
-        <button class="btn btn-primary mr-2">Previous</button>
-        <button class="btn btn-primary">Next</button>
+        <button onClick$={() => pokemonId.value--} class="btn btn-primary mr-2">
+          Previous
+        </button>
+        <button onClick$={() => pokemonId.value++} class="btn btn-primary">
+          Next
+        </button>
       </div>
     </>
   );
