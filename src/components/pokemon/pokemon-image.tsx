@@ -4,10 +4,11 @@ interface Props {
   id: number;
   size?: number;
   backImage?: boolean;
+  isVisible?: boolean;
 }
 
 export const PokemonImage = component$(
-  ({ id, size = 200, backImage = false }: Props) => {
+  ({ id, size = 200, backImage = false, isVisible = true }: Props) => {
     const isImageLoading = useSignal(false);
 
     useTask$(({ track }) => {
@@ -31,9 +32,13 @@ export const PokemonImage = component$(
             backImage ? "back" : ""
           }/${id}.png`}
           alt="Pokemon Sprite"
-          class={{
-            hidden: !isImageLoading.value,
-          }}
+          class={[
+            {
+              hidden: !isImageLoading.value,
+              "brightness-0": !isVisible,
+            },
+            "transition-all",
+          ]}
           onLoad$={() => (isImageLoading.value = true)}
         />
       </div>
