@@ -1,0 +1,20 @@
+import { type PokemonListResponse } from "~/interfaces/pokemon-list-response";
+import { type SmallPokemon } from "~/interfaces/small-pokemon";
+
+export const getSmallPokemoms = async (
+  offset: number = 0,
+  limit: number = 10
+): Promise<SmallPokemon[]> => {
+  const response = await fetch(
+    `https://pokeapi.co/api/v2/pokemon?limit=${limit}&offset=${offset}`
+  );
+  const data = (await response.json()) as PokemonListResponse;
+  return data.results.map(({ name, url }) => {
+    const segments = url.split("/");
+    const id = segments.at(-2)!;
+    return {
+      id,
+      name,
+    };
+  });
+};
