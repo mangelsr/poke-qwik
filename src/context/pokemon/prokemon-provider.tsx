@@ -3,6 +3,7 @@ import {
   component$,
   useContextProvider,
   useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 
 import { PokemonGameContext, PokemonListContext } from "../";
@@ -24,6 +25,29 @@ export const ProkemonProvider = component$(() => {
 
   useContextProvider(PokemonGameContext, pokemonGame);
   useContextProvider(PokemonListContext, pokemonList);
+
+  useVisibleTask$(() => {
+    const stringData = localStorage.getItem("pokemon-game");
+    if (stringData) {
+      const {
+        pokemonId = 10,
+        isPokemonVisible = true,
+        showBackImage = false,
+      } = JSON.parse(stringData) as PokemonGameState;
+      pokemonGame.pokemonId = pokemonId;
+      pokemonGame.isPokemonVisible = isPokemonVisible;
+      pokemonGame.showBackImage = showBackImage;
+    }
+  });
+
+  useVisibleTask$(({ track }) => {
+    track(() => [
+      pokemonGame.pokemonId,
+      pokemonGame.showBackImage,
+      pokemonGame.isPokemonVisible,
+    ]);
+    localStorage.setItem("pokemon-game", JSON.stringify(pokemonGame));
+  });
 
   return <Slot />;
 });
