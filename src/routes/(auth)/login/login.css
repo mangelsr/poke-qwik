@@ -1,9 +1,9 @@
 input {
-  @apply mb-3 focus:placeholder-transparent placeholder-gray-200 h-10 w-full border-b-2 border-gray-300 text-gray-600 focus:outline-none focus:border-purple-400 transition-all;
+  @apply mb-3 focus:placeholder-transparent placeholder-gray-950 h-10 w-full border-b-2 border-gray-950 text-gray-100 focus:outline-none focus:border-purple-400 transition-all bg-gray-500;
 }
 
 label {
-  @apply absolute left-0 -top-3.5 text-gray-600 text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm;
+  @apply absolute left-0 -top-3.5 text-gray-200 text-sm peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-2 transition-all peer-focus:-top-3.5 peer-focus:text-gray-600 peer-focus:text-sm;
 }
 
 button {
