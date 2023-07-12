@@ -4,6 +4,7 @@ import {
   useComputed$,
   useSignal,
   useStore,
+  useVisibleTask$,
 } from "@builder.io/qwik";
 import {
   type DocumentHead,
@@ -12,9 +13,10 @@ import {
   useLocation,
 } from "@builder.io/qwik-city";
 import { type SmallPokemon } from "~/interfaces/small-pokemon";
+import { getChatGPTResponse } from "~/helpers/get-chatgpt-response";
 import { getSmallPokemoms } from "~/helpers/get-small--pokemons";
-import { PokemonImage } from "~/components/pokemon/pokemon-image";
 import { Modal } from "~/components/shared";
+import { PokemonImage } from "~/components/pokemon/pokemon-image";
 
 export const usePokemonList = routeLoader$<SmallPokemon[]>(
   async ({ query, redirect, pathname }) => {
@@ -40,6 +42,18 @@ export default component$(() => {
   });
 
   const modalVisible = useSignal(false);
+
+  const chatGPTPokeFact = useSignal("");
+
+  useVisibleTask$(({ track }) => {
+    track(() => pokemonModal.name);
+    chatGPTPokeFact.value = "";
+    if (pokemonModal.name !== "") {
+      getChatGPTResponse(pokemonModal.name).then((response) => {
+        chatGPTPokeFact.value = response;
+      });
+    }
+  });
 
   const showModal = $((id: string, name: string) => {
     pokemonModal.id = id;
@@ -93,7 +107,11 @@ export default component$(() => {
         <div q:slot="title">{pokemonModal.name}</div>
         <div q:slot="content" class="flex flex-col justify-center items-center">
           <PokemonImage id={pokemonModal.id} />
-          <span>Asking ChatGPT...</span>
+          <span>
+            {chatGPTPokeFact.value === ""
+              ? "Asking ChatGPT..."
+              : chatGPTPokeFact.value}
+          </span>
         </div>
       </Modal>
     </>
