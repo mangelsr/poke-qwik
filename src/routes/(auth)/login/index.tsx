@@ -1,20 +1,26 @@
 import { component$, useStylesScoped$ } from "@builder.io/qwik";
-import { Form, routeAction$ } from "@builder.io/qwik-city";
+import { Form, routeAction$, zod$, z } from "@builder.io/qwik-city";
 
 import styles from "./login.css?inline";
 
-export const useLoginUserAction = routeAction$((data, { cookie, redirect }) => {
-  const { email, password } = data;
-  if (email === "miguel@google.com" && password === "123456") {
-    const jwt = "this_is_my_jwt";
-    cookie.set("jwt", jwt, { secure: true, path: "/" });
-    redirect(302, "/");
-  } else {
-    return {
-      success: false,
-    };
-  }
-});
+export const useLoginUserAction = routeAction$(
+  (data, { cookie, redirect }) => {
+    const { email, password } = data;
+    if (email === "miguel@google.com" && password === "123456") {
+      const jwt = "this_is_my_jwt";
+      cookie.set("jwt", jwt, { secure: true, path: "/" });
+      redirect(302, "/");
+    } else {
+      return {
+        success: false,
+      };
+    }
+  },
+  zod$({
+    email: z.string().email("Invalid format"),
+    password: z.string().min(6, "At least 6 characters"),
+  })
+);
 
 export default component$(() => {
   useStylesScoped$(styles);
