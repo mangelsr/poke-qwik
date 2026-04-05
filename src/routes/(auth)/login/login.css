@@ -1,3 +1,5 @@
+@reference "tailwindcss";
+
 input {
   @apply mb-3 focus:placeholder-transparent placeholder-gray-950 h-10 w-full border-b-2 border-gray-950 text-gray-100 focus:outline-none focus:border-purple-400 transition-all bg-gray-500;
 }

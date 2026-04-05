@@ -1,5 +1,7 @@
+@reference "tailwindcss";
+
 .modal-background {
-  @apply fixed flex justify-center items-center inset-0 bg-black bg-opacity-50 overflow-y-auto h-full w-full transition-all;
+  @apply fixed flex justify-center items-center inset-0 bg-black/50 overflow-y-auto h-full w-full transition-all;
 }
 
 .modal-content {

@@ -1,16 +1,15 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: import.meta.env.PUBLIC_OPEN_AI_KEY,
+  dangerouslyAllowBrowser: true,
 });
-const openai = new OpenAIApi(configuration);
 
 export const getChatGPTResponse = async (
   pokemonName: string
 ): Promise<string> => {
-  delete configuration.baseOptions.headers["User-Agent"];
-  const response = await openai.createCompletion({
-    model: "text-ada-001",
+  const response = await openai.completions.create({
+    model: "gpt-3.5-turbo-instruct", // text-ada-001 is deprecated/removed in newer API versions usually, but I'll leave the code almost same but upgraded
     prompt: `Write some interesting data about pokemon ${pokemonName}`,
     temperature: 1,
     max_tokens: 64,
@@ -19,7 +18,7 @@ export const getChatGPTResponse = async (
     presence_penalty: 0,
   });
   return (
-    response.data.choices[0].text ||
+    response.choices[0]?.text ||
     `I don't have anythign about ${pokemonName}, I'm sorry`
   );
 };
